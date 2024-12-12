@@ -9,6 +9,7 @@
     "color": "^4.2.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",

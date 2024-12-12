@@ -1,9 +1,9 @@
 const mongoose=require('mongoose')
+require('dotenv').config();
 
 
 
-const uri="mongodb+srv://adamBlack:UYeRjFjOlBgj8M7h@cluster0.2cninsm.mongodb.net/authDami?retryWrites=true&w=majority"
-
+const uri=process.env.MONGODB_URI 
 
 
 
