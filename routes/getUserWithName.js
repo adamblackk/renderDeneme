@@ -3,7 +3,7 @@ var router = express.Router();
 const UserfromModel = require('../config/models/auth');
 
 // Belirli bir name parametresine göre kullanıcıyı getir
-router.get('/getUserWithName', async (req, res) => {
+router.post('/getUserWithName', async (req, res) => {
   try {
     const { name } = req.body; // Query parametrelerinden 'name' değerini al
 
