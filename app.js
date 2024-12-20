@@ -10,6 +10,7 @@ var getUser = require('./routes/getUsers');
 var addUser = require ('./routes/addUser');
 var updatedUser = require('./routes/updateUser');
 var deleteUser = require ('./routes/deleteUser')
+var getUserWithName = require('./routes/getUserWithName')
 
 //new 
 var newRouter = require('./routes/new')
@@ -20,7 +21,7 @@ connectDB.connectDB()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-require('dotenv').config(); // .env dosyasını yükler
+//require('dotenv').config(); // .env dosyasını yükler
 
 
 
@@ -36,6 +37,7 @@ app.use('/',newRouter);
 app.use('/',addUser);
 app.use('/',updatedUser);
 app.use('/',deleteUser);
+app.use('/',getUserWithName);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
