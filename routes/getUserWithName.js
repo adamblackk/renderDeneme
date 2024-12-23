@@ -12,7 +12,8 @@ router.post('/getUserWithName', async (req, res) => {
     }
 
     // Veritabanından name değerine göre kullanıcıyı ara
-    const users = await UserfromModel.User.find({ name: name }); // `find` ile eşleşen tüm belgeleri getir
+    const users = await UserfromModel.User.find({ name: name })
+      .select('-_id -__v'); // `_id` ve `__v` alanlarını hariç tut
 
     if (users.length === 0) {
       return res.status(404).json({ error: 'Belirtilen isimde kullanıcı bulunamadı.' });
