@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UserfromModel = require('../config/models/auth')
+const UserfromModel = require('../../config/models/auth')
 
 
 router.put('/updateUser', async (req, res) => {

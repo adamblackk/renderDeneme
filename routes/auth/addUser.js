@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UserfromModel = require('../config/models/auth')
+const UserfromModel = require('../../config/models/auth')
 
 /* POST: Kullanıcı Ekleme */
 router.post('/addUser', async (req, res) => {
