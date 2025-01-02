@@ -8,11 +8,11 @@ const LaundryPoolSchema = new mongoose.Schema({
       unique: true // Ensures each IslemID is unique
     },
     CikisTarihi: {
-      type: Date,
+      type: String,
       required: true
     },
     DonusTarihi: {
-      type: Date
+      type: String
     },
     OtelAdi: {
       type: String,

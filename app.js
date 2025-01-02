@@ -20,6 +20,7 @@ var getLaundryDataByAggregation = require('./routes/LaundryData/getLaundryDataBy
 
 //UpdateLaundryPool
 var updateLaundryPool = require('./routes/LaundryData/updateLoundryPool')
+var getDataFromPool = require('./routes/LaundryData/getDataFromPool')
 
 //new 
 var newRouter = require('./routes/new')
@@ -55,6 +56,8 @@ app.use('/',getLaundryDataByAggregation);
 
 //UpdateLaundryPool
 app.use('/',updateLaundryPool);
+app.use('/',getDataFromPool)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
