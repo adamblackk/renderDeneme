@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 // Kullanıcı Şeması
-const LaundrySchema = new mongoose.Schema({
+const LaundryPoolSchema = new mongoose.Schema({
     IslemID: {
       type: Number,
       required: true,
       unique: true // Ensures each IslemID is unique
     },
     CikisTarihi: {
-      type: String,
+      type: Date,
       required: true
     },
     DonusTarihi: {
-      type: String
+      type: Date
     },
     OtelAdi: {
       type: String,
@@ -41,6 +41,6 @@ const LaundrySchema = new mongoose.Schema({
   });
 
 // Kullanıcı Modeli
-const LaundryModel = mongoose.model('laundryData', LaundrySchema,'laundryData');
+const LaundryPoolModel = mongoose.model('laundryPool', LaundryPoolSchema,'laundryPool');
 
-module.exports = {LaundryModel};
+module.exports = {LaundryPoolModel};

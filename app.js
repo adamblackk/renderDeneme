@@ -18,6 +18,9 @@ var getUserWithName = require('./routes/auth/getUserWithName')
 var getLaundryData = require('./routes/LaundryData/getLaundryData')
 var getLaundryDataByAggregation = require('./routes/LaundryData/getLaundryDataByAggregation')
 
+//UpdateLaundryPool
+var updateLaundryPool = require('./routes/LaundryData/updateLoundryPool')
+
 //new 
 var newRouter = require('./routes/new')
 
@@ -49,6 +52,9 @@ app.use('/',getUserWithName);
 //Data
 app.use('/',getLaundryData);
 app.use('/',getLaundryDataByAggregation);
+
+//UpdateLaundryPool
+app.use('/',updateLaundryPool);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
