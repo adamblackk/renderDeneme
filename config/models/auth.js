@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 
 // Kullanıcı Şeması
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
   email: { type: String, required: true },
-  age: { type: Number, required: true }
+  password: { type: String, required: true },
+  isActive: { type: Boolean, required: true }
+}, {
+  timestamps: true // createdAt ve updatedAt alanlarını otomatik ekler
 });
 
 // Kullanıcı Modeli
-const User = mongoose.model('userInfo', userSchema,'userInfo');
+const User = mongoose.model('userInfo', userSchema, 'userInfo');
 
-module.exports = {User};
+module.exports = { User };

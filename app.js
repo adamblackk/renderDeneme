@@ -11,7 +11,7 @@ var getUser = require('./routes/auth/getUsers');
 var addUser = require ('./routes/auth/addUser');
 var updatedUser = require('./routes/auth/updateUser');
 var deleteUser = require ('./routes/auth/deleteUser')
-var getUserWithName = require('./routes/auth/getUserWithName')
+var getUserWithName = require('./routes/auth/getUserWithEmail')
 
 
 //Data
