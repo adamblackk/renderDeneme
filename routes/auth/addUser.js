@@ -1,10 +1,11 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()$$$$\\.,;:\s@"]+(\.[^<>()$$$$\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
 
@@ -35,8 +36,12 @@ router.post('/addUser', async (req, res) => {
       return res.status(409).json({ error: 'Bu e-posta adresi zaten kayıtlı.' });
     }
 
+    // Şifreyi hashle
+    const saltRounds = 10; // Salt rounds for bcrypt
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // Yeni kullanıcı oluştur ve kaydet
-    const newUser = new UserfromModel.User({ email, password, isActive });
+    const newUser = new UserfromModel.User({ email, password: hashedPassword, isActive });
     const savedUser = await newUser.save();
 
     // Başarılı yanıt döndür
