@@ -38,8 +38,13 @@ router.post('/login', async (req, res) => {
 
     // Başarılı yanıt döndür
     res.status(200).json({
-      loginState: true,
-      email:email,
+      messageState: true,
+      user: {
+        email: user.email,
+        password :user.password,
+        isAvtive : user.isActive
+        // Diğer gerekli user bilgilerini buraya ekleyebilirsiniz
+      },
     });
   } catch (error) {
     console.error('Hata:', error.message);

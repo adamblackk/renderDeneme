@@ -47,7 +47,11 @@ router.post('/addUser', async (req, res) => {
     // Başarılı yanıt döndür
     res.status(201).json({
       messageState: true,
-      user: savedUser,
+      user: {
+        email:savedUser.email,
+        password:savedUser.password,
+        isActive:savedUser.isActive
+      },
     });
   } catch (error) {
     console.error('Hata:', error.message);
