@@ -46,7 +46,7 @@ router.post('/addUser', async (req, res) => {
 
     // Başarılı yanıt döndür
     res.status(201).json({
-      message: 'Kullanıcı başarıyla kaydedildi!',
+      messageState: true,
       user: savedUser,
     });
   } catch (error) {

@@ -39,10 +39,7 @@ router.post('/login', async (req, res) => {
     // Başarılı yanıt döndür
     res.status(200).json({
       loginState: true,
-      user: {
-        email: user.email,
-        // Diğer gerekli user bilgilerini buraya ekleyebilirsiniz
-      },
+      email:email,
     });
   } catch (error) {
     console.error('Hata:', error.message);
