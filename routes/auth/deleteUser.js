@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
+const authenticateToken = require('../../config/utils/authenticateToken'); // Middleware'i içe aktarın
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
@@ -8,7 +9,7 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-router.delete('/deleteUser', async (req, res) => {
+router.delete('/deleteUser',authenticateToken, async (req, res) => {
   try {
     const { email } = req.body;
 

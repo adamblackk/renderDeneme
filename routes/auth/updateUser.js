@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
+const authenticateToken = require('../../config/utils/authenticateToken'); // Middleware'i içe aktarın
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
@@ -9,7 +10,7 @@ function validateEmail(email) {
 }
 
 /* PUT: Kullanıcı isActive Durumunu Güncelle */
-router.put('/updateUser', async (req, res) => {
+router.put('/updateUser',authenticateToken, async (req, res) => {
   try {
     const { email, isActive } = req.body;
 

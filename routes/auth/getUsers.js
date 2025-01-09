@@ -1,13 +1,13 @@
-var express = require('express');
-var router = express.Router();
-const UserfromModel = require('../../config/models/auth')
+const express = require('express');
+const router = express.Router();
+const authenticateToken = require('../../config/utils/authenticateToken'); // Middleware'i içe aktarın
+const UserfromModel = require('../../config/models/auth');
 
-router.get('/getUser', async (req, res) => {
+// `/getUser` endpoint'i
+router.get('/getUser', authenticateToken, async (req, res) => {
   try {
-    // Veritabanından tüm kullanıcıları al ve `_id` ile `__v` alanlarını hariç tut
-    const users = await UserfromModel.User.find().select('-_id -__v'); // `_id` ve `__v` hariç
-
-    res.status(200).json(users); // JSON formatında döndür
+    const users = await UserfromModel.User.find().select('-_id -__v');
+    res.status(200).json(users);
   } catch (error) {
     console.error('Hata:', error.message);
     res.status(500).json({ error: 'Kullanıcı bilgileri alınırken bir hata oluştu.' });

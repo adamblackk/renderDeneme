@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // JWT kütüphanesini ekleyin
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
 
@@ -44,14 +45,21 @@ router.post('/addUser', async (req, res) => {
     const newUser = new UserfromModel.User({ email, password: hashedPassword, isActive });
     const savedUser = await newUser.save();
 
+    // JWT oluştur
+    const token = jwt.sign(
+      { id: savedUser._id, email: savedUser.email },
+      'your-secret-key', // Güvenli bir şekilde saklayın
+      { expiresIn: '30d' } // Token süresi
+    );
+
     // Başarılı yanıt döndür
     res.status(201).json({
       messageState: true,
       user: {
-        email:savedUser.email,
-        password:savedUser.password,
-        isActive:savedUser.isActive
+        email: savedUser.email,
+        isActive: savedUser.isActive
       },
+      token // Token'ı yanıtla birlikte döndür
     });
   } catch (error) {
     console.error('Hata:', error.message);

@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
+const authenticateToken = require('../../config/utils/authenticateToken');
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
@@ -10,7 +11,7 @@ function validateEmail(email) {
 }
 
 /* POST: Kullanıcı Giriş */
-router.post('/login', async (req, res) => {
+router.post('/login',authenticateToken, async (req, res) => {
   try {
     const { email, password } = req.body;
 

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const UserfromModel = require('../../config/models/auth');
+const authenticateToken = require('../../config/utils/authenticateToken'); // Middleware'i içe aktarın
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
@@ -9,7 +10,7 @@ function validateEmail(email) {
 }
 
 // Belirli bir email parametresine göre kullanıcıyı getir
-router.post('/getUserWithEmail', async (req, res) => {
+router.post('/getUserWithEmail',authenticateToken, async (req, res) => {
   try {
     const { email } = req.body; // Body'den 'email' değerini al
 
