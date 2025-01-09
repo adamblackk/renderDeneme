@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const UserfromModel = require('../../config/models/auth');
-const authenticateToken = require('../../config/utils/authenticateToken');
+const jwt = require('jsonwebtoken'); // JWT kütüphanesini ekleyin
 
 // E-posta doğrulama fonksiyonu
 function validateEmail(email) {
@@ -11,7 +11,7 @@ function validateEmail(email) {
 }
 
 /* POST: Kullanıcı Giriş */
-router.post('/login',authenticateToken, async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -37,6 +37,13 @@ router.post('/login',authenticateToken, async (req, res) => {
       return res.status(401).json({ error: 'Geçersiz e-posta veya şifre.' });
     }
 
+     // JWT oluştur
+     const token = jwt.sign(
+      { id: user._id, email: user.email },
+      'your-secret-key', // Güvenli bir şekilde saklayın
+      { expiresIn: '30d' } // Token süresi
+    );
+
     // Başarılı yanıt döndür
     res.status(200).json({
       messageState: true,
@@ -46,6 +53,7 @@ router.post('/login',authenticateToken, async (req, res) => {
         isAvtive : user.isActive
         // Diğer gerekli user bilgilerini buraya ekleyebilirsiniz
       },
+      token
     });
   } catch (error) {
     console.error('Hata:', error.message);

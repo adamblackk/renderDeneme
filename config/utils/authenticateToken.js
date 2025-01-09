@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const BlacklistedToken = require('../models/blackListedTokenModel');
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -8,13 +9,25 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ error: 'Erişim izni reddedildi.' });
   }
 
-  jwt.verify(token, 'your-secret-key', (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Geçersiz token.' });
+  try {
+    // Kara liste kontrolü
+    const blacklisted = await BlacklistedToken.findOne({ token });
+    if (blacklisted) {
+      return res.status(403).json({ error: 'Geçersiz token from blackList.' });
     }
-    req.user = user; // Doğrulanan kullanıcı bilgilerini isteğe ekleyin
-    next();
-  });
+
+    // Token doğrulama
+    jwt.verify(token, 'your-secret-key', (err, user) => {
+      if (err) {
+        return res.status(403).json({ error: 'Geçersiz token.' });
+      }
+      req.user = user; // Doğrulanan kullanıcı bilgilerini isteğe ekleyin
+      next();
+    });
+  } catch (error) {
+    console.error('Hata:', error.message);
+    res.status(500).json({ error: 'Sunucu hatası.' });
+  }
 }
 
 module.exports = authenticateToken;

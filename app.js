@@ -13,6 +13,7 @@ var updatedUser = require('./routes/auth/updateUser');
 var deleteUser = require ('./routes/auth/deleteUser')
 var getUserWithName = require('./routes/auth/getUserWithEmail')
 var login = require('./routes/auth/login')
+var logout  = require ('./routes/auth/logout')
 
 
 //Data
@@ -51,6 +52,7 @@ app.use('/',updatedUser);
 app.use('/',deleteUser);
 app.use('/',getUserWithName);
 app.use('/',login)
+app.use('/',logout)
 
 //Data"
 app.use('/',getLaundryData);
