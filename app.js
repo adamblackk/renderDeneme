@@ -7,6 +7,7 @@ var connectDB = require('./config/utils/mongoDB')
 
 //auth
 var indexRouter = require('./routes/index');
+var policy = require('./routes/policy')
 var getUser = require('./routes/auth/getUsers');
 var addUser = require ('./routes/auth/addUser');
 var updatedUser = require('./routes/auth/updateUser');
@@ -43,7 +44,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 //Auth
+app.use('/', policy);
 app.use('/', indexRouter);
 app.use('/', getUser);
 app.use('/',newRouter);
