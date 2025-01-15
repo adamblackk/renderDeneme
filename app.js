@@ -17,7 +17,7 @@ var getUserWithName = require('./routes/auth/getUserWithEmail')
 var login = require('./routes/auth/login')
 var logout  = require ('./routes/auth/logout')
 var verifyPasswordResetCode = require('./routes/auth/verifyPasswordResetCode')
-var refreshPassword = require('./routes/auth/refreshpassword')
+var refreshPassword = require('./routes/auth/refreshPassword')
 
 
 //Data
