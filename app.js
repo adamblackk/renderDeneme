@@ -6,6 +6,7 @@ var logger = require('morgan');
 var connectDB = require('./config/utils/mongoDB')
 
 //auth
+var sendPasswordResetCode = require('./routes/auth/sendPasswordResetCode')
 var indexRouter = require('./routes/index');
 var policy = require('./routes/policy')
 var getUser = require('./routes/auth/getUsers');
@@ -15,6 +16,8 @@ var deleteUser = require ('./routes/auth/deleteUser')
 var getUserWithName = require('./routes/auth/getUserWithEmail')
 var login = require('./routes/auth/login')
 var logout  = require ('./routes/auth/logout')
+var verifyPasswordResetCode = require('./routes/auth/verifyPasswordResetCode')
+var refreshPassword = require('./routes/auth/refreshpassword')
 
 
 //Data
@@ -58,6 +61,9 @@ app.use('/',deleteUser);
 app.use('/',getUserWithName);
 app.use('/',login)
 app.use('/',logout)
+app.use('/',sendPasswordResetCode)
+app.use('/',verifyPasswordResetCode)
+app.use('/',refreshPassword)
 
 //Data"
 app.use('/',getLaundryData);

@@ -49,7 +49,6 @@ router.post('/login', async (req, res) => {
       messageState: true,
       user: {
         email: user.email,
-        password :user.password,
         isAvtive : user.isActive
         // Diğer gerekli user bilgilerini buraya ekleyebilirsiniz
       },
