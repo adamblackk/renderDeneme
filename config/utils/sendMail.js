@@ -1,11 +1,12 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 // Transporter yapılandırması
 const mailTransporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'admblck50@gmail.com', // Gönderen e-posta adresiniz
-    pass: 'lemriqkhazvqmwyo'  // Gmail şifreniz veya uygulama şifreniz
+    user: process.env.EMAIL_USER, // Gönderen e-posta adresiniz
+    pass: process.env.EMAIL_PASS  // Gmail şifreniz veya uygulama şifreniz
   }
 });
 
