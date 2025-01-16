@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../../config/utils/authenticateToken'); // Middleware'i içe aktarın
 const UserfromModel = require('../../config/models/auth');
-const { UserState } = require('botbuilder');
 
 // `/getUser` endpoint'i
 router.get('/getUser', authenticateToken, async (req, res) => {
