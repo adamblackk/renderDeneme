@@ -18,6 +18,7 @@ var login = require('./routes/auth/login')
 var logout  = require ('./routes/auth/logout')
 var verifyPasswordResetCode = require('./routes/auth/verifyPasswordResetCode')
 var refreshPassword = require('./routes/auth/refreshPasssword')
+var googleAuth = require('./routes/auth/googleAuth')
 
 
 //Data
@@ -64,6 +65,7 @@ app.use('/',logout)
 app.use('/',sendPasswordResetCode)
 app.use('/',verifyPasswordResetCode)
 app.use('/',refreshPassword)
+app.use('/',googleAuth)
 
 //Data"
 app.use('/',getLaundryData);

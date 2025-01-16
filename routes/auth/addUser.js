@@ -55,10 +55,8 @@ router.post('/addUser', async (req, res) => {
     // Başarılı yanıt döndür
     res.status(201).json({
       messageState: true,
-      user: {
-        email: savedUser.email,
-        isActive: savedUser.isActive
-      },
+      email: savedUser.email,
+      isActive: savedUser.isActive,
       token // Token'ı yanıtla birlikte döndür
     });
   } catch (error) {

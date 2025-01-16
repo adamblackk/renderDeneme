@@ -31,7 +31,12 @@ router.post('/getUserWithEmail',authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Belirtilen e-posta ile kullanıcı bulunamadı.' });
     }
 
-    res.status(200).json(user); // Kullanıcıyı JSON formatında döndür
+    res.status(200).json({
+      email: user.email,
+      isActive : user.isActive,
+      createdAt : user.createdAt,
+      updatedAt :user.updatedAt
+    }); // Kullanıcıyı JSON formatında döndür
   } catch (error) {
     console.error('Hata:', error.message);
     res.status(500).json({ error: 'Kullanıcı bilgileri alınırken bir hata oluştu.' });

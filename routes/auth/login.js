@@ -47,11 +47,8 @@ router.post('/login', async (req, res) => {
     // Başarılı yanıt döndür
     res.status(200).json({
       messageState: true,
-      user: {
-        email: user.email,
-        isAvtive : user.isActive
-        // Diğer gerekli user bilgilerini buraya ekleyebilirsiniz
-      },
+      email: user.email,
+      isAvtive : user.isActive,
       token
     });
   } catch (error) {
