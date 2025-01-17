@@ -26,6 +26,7 @@ var getFreeStories = require('./routes/Story/getFreeStories')
 var getCategories = require('./routes/Story/getCategories')
 var insertStory = require('./routes/Story/insertStory')
 var updateStory = require('./routes/Story/updateStory')
+var getUpdatedStories = require('./routes/Story/getUpdatedStories')
 
 
 //Data
@@ -74,6 +75,7 @@ app.use('/',sendPasswordResetCode)
 app.use('/',verifyPasswordResetCode)
 app.use('/',refreshPassword)
 app.use('/',googleAuth)
+app.use('/',getUpdatedStories)
 
 //Stories
 app.use('/',getAllStory);
