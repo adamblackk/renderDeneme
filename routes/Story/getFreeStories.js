@@ -5,7 +5,7 @@ const StoryFromModel = require('../../config/models/storyModel');
 
 router.get('/getFreeStories', authenticateToken, async (req, res) => {
     try {
-      const freeStories = await StoryFromModel.Story.find({ isPremium: false }).select('-_id -__v');
+      const freeStories = await StoryFromModel.Story.find({ isPremium: false }).select('-__v');
       res.status(200).json(freeStories);
     } catch (error) {
       console.error('Hata:', error.message);

@@ -5,7 +5,7 @@ const StoryFromModel = require('../../config/models/storyModel');
 
 router.get('/getAllStory', authenticateToken, async (req, res) => {
     try {
-      const AllStory = await StoryFromModel.Story.find().select('-_id -__v');
+      const AllStory = await StoryFromModel.Story.find().select('-__v');
       res.status(200).json(AllStory);
     } catch (error) {
       console.error('Hata:', error.message);

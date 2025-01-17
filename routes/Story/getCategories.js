@@ -5,7 +5,7 @@ const CategoryFromModel = require('../../config/models/storyCategoryModel');
 
 router.get('/getCategories', authenticateToken, async (req, res) => {
     try {
-      const categories = await CategoryFromModel.StoryCategory.find().select('-_id -__v');
+      const categories = await CategoryFromModel.StoryCategory.find().select('-__v');
       res.status(200).json(categories);
     } catch (error) {
       console.error('Hata:', error.message);
