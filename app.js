@@ -20,6 +20,13 @@ var verifyPasswordResetCode = require('./routes/auth/verifyPasswordResetCode')
 var refreshPassword = require('./routes/auth/refreshPasssword')
 var googleAuth = require('./routes/auth/googleAuth')
 
+// Stories
+var getAllStory = require('./routes/Story/getAllStory')
+var getFreeStories = require('./routes/Story/getFreeStories')
+var getCategories = require('./routes/Story/getCategories')
+var insertStory = require('./routes/Story/insertStory')
+var updateStory = require('./routes/Story/updateStory')
+
 
 //Data
 var getLaundryData = require('./routes/LaundryData/getLaundryData')
@@ -30,7 +37,8 @@ var updateLaundryPool = require('./routes/LaundryData/updateLoundryPool')
 var getDataFromPool = require('./routes/LaundryData/getDataFromPool')
 
 //new 
-var newRouter = require('./routes/new')
+var newRouter = require('./routes/new');
+const { insertMany } = require('./config/models/blackListedTokenModel');
 
 var app = express();
 connectDB.connectDB()
@@ -66,6 +74,13 @@ app.use('/',sendPasswordResetCode)
 app.use('/',verifyPasswordResetCode)
 app.use('/',refreshPassword)
 app.use('/',googleAuth)
+
+//Stories
+app.use('/',getAllStory);
+app.use('/',getFreeStories)
+app.use('/',getCategories)
+app.use('/',insertStory)
+app.use('/',updateStory)
 
 //Data"
 app.use('/',getLaundryData);
