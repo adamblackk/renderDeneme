@@ -24,18 +24,13 @@ var googleAuth = require('./routes/auth/googleAuth')
 var getAllStory = require('./routes/Story/getAllStory')
 var getFreeStories = require('./routes/Story/getFreeStories')
 var getCategories = require('./routes/Story/getCategories')
+var addCategory = require('./routes/Story/addCategory')
 var insertStory = require('./routes/Story/insertStory')
 var updateStory = require('./routes/Story/updateStory')
 var getUpdatedStories = require('./routes/Story/getUpdatedStories')
 
 
-//Data
-var getLaundryData = require('./routes/LaundryData/getLaundryData')
-var getLaundryDataByAggregation = require('./routes/LaundryData/getLaundryDataByAggregation')
 
-//UpdateLaundryPool
-var updateLaundryPool = require('./routes/LaundryData/updateLoundryPool')
-var getDataFromPool = require('./routes/LaundryData/getDataFromPool')
 
 //new 
 var newRouter = require('./routes/new');
@@ -76,6 +71,7 @@ app.use('/',verifyPasswordResetCode)
 app.use('/',refreshPassword)
 app.use('/',googleAuth)
 app.use('/',getUpdatedStories)
+app.use('/',addCategory)
 
 //Stories
 app.use('/',getAllStory);
@@ -84,13 +80,7 @@ app.use('/',getCategories)
 app.use('/',insertStory)
 app.use('/',updateStory)
 
-//Data"
-app.use('/',getLaundryData);
-app.use('/',getLaundryDataByAggregation);
 
-//UpdateLaundryPool
-app.use('/',updateLaundryPool);
-app.use('/',getDataFromPool)
 
 
 // catch 404 and forward to error handler

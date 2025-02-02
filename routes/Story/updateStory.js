@@ -14,16 +14,19 @@ router.patch('/incrementStoryField', authenticateToken, async (req, res) => {
     }
 
     // Desteklenen alanlar
-    const validFields = ['likes', 'views', 'saves'];
+    const validFields = ['views', 'likes', 'saves', 'shares'];
     if (!validFields.includes(field)) {
       return res.status(400).json({ error: `Geçersiz alan: ${field}` });
     }
 
-    // Alanı 1 artır
+    // stats objesi içindeki alanı 1 artır
     const updatedStory = await StoryFromModel.Story.findByIdAndUpdate(
       storyId,
-      { $inc: { [field]: 1 } }, // `$inc` ile alanı artır
-      { new: true } // Güncellenmiş dökümanı döndür
+      { $inc: { [`stats.${field}`]: 1 } }, // stats objesi içindeki alanı artır
+      { 
+        new: true,
+        select: 'title stats' // Sadece gerekli alanları döndür
+      }
     );
 
     if (!updatedStory) {
@@ -31,12 +34,17 @@ router.patch('/incrementStoryField', authenticateToken, async (req, res) => {
     }
 
     res.status(200).json({
-      message: `${field} alanı başarıyla artırıldı!`,
-      story: updatedStory,
+      message: `${field} başarıyla artırıldı!`,
+      storyId: updatedStory._id,
+      title: updatedStory.title,
+      stats: updatedStory.stats
     });
   } catch (error) {
     console.error('Hata:', error.message);
-    res.status(500).json({ error: 'Güncelleme sırasında bir hata oluştu.' });
+    res.status(500).json({ 
+      error: 'Güncelleme sırasında bir hata oluştu.',
+      details: error.message 
+    });
   }
 });
 

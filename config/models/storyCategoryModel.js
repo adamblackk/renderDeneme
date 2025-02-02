@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const storyCategorySchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true }, // Kategori adı
+  category: { type: String, required: true, unique: true }, // Kategori adı
   imageUrl: { type: String, required: true }, // Kategorinin görsel URL'si
   isPremium: { type: Boolean, default: false } // Kategori premium mu?
 }, {
