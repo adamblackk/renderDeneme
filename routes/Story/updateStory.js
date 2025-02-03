@@ -34,16 +34,13 @@ router.patch('/incrementStoryField', authenticateToken, async (req, res) => {
     }
 
     res.status(200).json({
-      message: `${field} başarıyla artırıldı!`,
-      storyId: updatedStory._id,
-      title: updatedStory.title,
-      stats: updatedStory.stats
+      success : true
     });
   } catch (error) {
     console.error('Hata:', error.message);
     res.status(500).json({ 
-      error: 'Güncelleme sırasında bir hata oluştu.',
-      details: error.message 
+      success : false,
+      error : error.message
     });
   }
 });
