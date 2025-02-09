@@ -1,20 +1,5 @@
 const mongoose = require('mongoose');
 
-// Hikaye Şeması
-/* const storySchema = new mongoose.Schema({
-  title: { type: String, required: true, unique: true }, // Benzersiz başlık
-  content: { type: String, required: true },
-  category: { type: String, required: true },
-  tags: { type: [String], default: [] },
-  views: { type: Number, default: 0 },
-  likes: { type: Number, default: 0 },
-  saves: { type: Number, default: 0 },
-  imageUrl: { type: String, default: null },
-  source: { type: String, default: null },
-  isPremium: { type: Boolean, default: false },
-}, {
-  timestamps: true
-}); */
 
 const storySchema = new mongoose.Schema({
   title: { 
@@ -86,5 +71,14 @@ storySchema.index({ isPremium: 1 });
 
 // Hikaye Modeli
 const Story = mongoose.model('Story', storySchema);
+const Story_tr = mongoose.model("stories_tr",storySchema)
+const Story_en = mongoose.model("stories_en",storySchema)
+const Story_es = mongoose.model("stories_es",storySchema)
 
-module.exports = { Story };
+module.exports = { 
+  Story,
+  Story_tr,
+  Story_en,
+  Story_es
+
+ };

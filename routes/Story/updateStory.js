@@ -3,26 +3,53 @@ const router = express.Router();
 const authenticateToken = require('../../config/utils/authenticateToken');
 const StoryFromModel = require('../../config/models/storyModel');
 
-// PATCH: Her istekte alan artırma endpoint'i
 router.patch('/incrementStoryField', authenticateToken, async (req, res) => {
   try {
-    const { storyId, field } = req.body;
+    const { storyId, field, lang } = req.body;
 
-    // Gerekli alanların kontrolü
-    if (!storyId || !field) {
-      return res.status(400).json({ error: 'Gerekli alanlar eksik!' });
+    // Tüm gerekli alanların kontrolü
+    if (!storyId || !field || !lang) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Gerekli alanlar eksik! (storyId, field, lang zorunludur)'
+      });
     }
 
-    // Desteklenen alanlar
+    // Desteklenen dilleri kontrol et
+    const supportedLanguages = ['tr', 'en', 'es'];
+    if (!supportedLanguages.includes(lang)) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Desteklenmeyen dil!',
+        supportedLanguages
+      });
+    }
+
+    // Desteklenen alanlar kontrolü
     const validFields = ['views', 'likes', 'saves', 'shares'];
     if (!validFields.includes(field)) {
-      return res.status(400).json({ error: `Geçersiz alan: ${field}` });
+      return res.status(400).json({ 
+        success: false,
+        error: `Geçersiz alan: ${field}`,
+        validFields
+      });
+    }
+
+    // Collection adını oluştur ve collection'ı seç
+    const collectionName = `Story_${lang}`;
+    const StoryCollection = StoryFromModel[collectionName];
+
+    if (!StoryCollection) {
+      return res.status(404).json({ 
+        success: false,
+        error: `${lang} dili için collection bulunamadı`
+      });
     }
 
     // stats objesi içindeki alanı 1 artır
-    const updatedStory = await StoryFromModel.Story.findByIdAndUpdate(
+    const updatedStory = await StoryCollection.findByIdAndUpdate(
       storyId,
-      { $inc: { [`stats.${field}`]: 1 } }, // stats objesi içindeki alanı artır
+      { $inc: { [`stats.${field}`]: 1 } },
       { 
         new: true,
         select: 'title stats' // Sadece gerekli alanları döndür
@@ -30,17 +57,28 @@ router.patch('/incrementStoryField', authenticateToken, async (req, res) => {
     );
 
     if (!updatedStory) {
-      return res.status(404).json({ error: 'Hikaye bulunamadı!' });
+      return res.status(404).json({ 
+        success: false,
+        error: `${lang} dilinde belirtilen ID'ye sahip hikaye bulunamadı!`
+      });
     }
 
     res.status(200).json({
-      success : true
+      success: true,
+      language: lang,
+      story: {
+        id: updatedStory._id,
+        title: updatedStory.title,
+        stats: updatedStory.stats
+      }
     });
+
   } catch (error) {
-    console.error('Hata:', error.message);
+    console.error('Hata:', error);
     res.status(500).json({ 
-      success : false,
-      error : error.message
+      success: false,
+      error: 'İşlem sırasında bir hata oluştu.',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
