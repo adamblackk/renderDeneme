@@ -3,7 +3,7 @@ const router = express.Router();
 const authenticateToken = require('../../config/utils/authenticateToken');
 const StoryFromModel = require('../../config/models/storyModel');
 
-router.get('/getAllStory', authenticateToken, async (req, res) => {
+router.post('/getAllStory', authenticateToken, async (req, res) => {
     try {
         // Body'den dil parametresi kontrolü
         if (!req.body.lang) {
@@ -47,11 +47,8 @@ router.get('/getAllStory', authenticateToken, async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            language: lang,
-            count: stories.length,
-            stories
-        });
+        res.status(200).json(stories
+        );
 
     } catch (error) {
         console.error('Hata:', error);

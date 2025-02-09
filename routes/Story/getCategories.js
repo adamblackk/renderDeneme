@@ -3,7 +3,7 @@ const router = express.Router();
 const authenticateToken = require('../../config/utils/authenticateToken');
 const CategoryFromModel = require('../../config/models/storyCategoryModel');
 
-router.get('/getCategories', authenticateToken, async (req, res) => {
+router.post('/getCategories', authenticateToken, async (req, res) => {
     try {
         // Dil parametresi kontrolü
         if (!req.body.lang) {
@@ -52,12 +52,9 @@ router.get('/getCategories', authenticateToken, async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            success: true,
-            language: lang,
-            count: categories.length,
+        res.status(200).json(
             categories
-        });
+        );
 
     } catch (error) {
         console.error('Hata:', error);
