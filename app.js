@@ -29,6 +29,10 @@ var insertStory = require('./routes/Story/insertStory')
 var updateStory = require('./routes/Story/updateStory')
 var getUpdatedStories = require('./routes/Story/getUpdatedStories')
 
+//Subscription
+var verifySubscription = require('./routes/Subscription/verifySubscription')
+var subscriptionStatus = require('./routes/Subscription/subscriptionStatus')
+var subscriptionWebhook = require('./routes/Subscription/subscriptionWebhook')
 
 
 
@@ -79,6 +83,11 @@ app.use('/',getFreeStories)
 app.use('/',getCategories)
 app.use('/',insertStory)
 app.use('/',updateStory)
+
+//Subscription
+app.use('/',verifySubscription)
+app.use('/',subscriptionStatus)
+app.use('/',subscriptionWebhook)
 
 
 

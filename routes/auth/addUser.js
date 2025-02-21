@@ -57,6 +57,7 @@ router.post('/addUser', async (req, res) => {
       messageState: true,
       email: savedUser.email,
       isActive: savedUser.isActive,
+      isPremium : savedUser.isPremium,
       token // Token'ı yanıtla birlikte döndür
     });
   } catch (error) {
