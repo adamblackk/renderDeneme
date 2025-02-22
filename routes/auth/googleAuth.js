@@ -39,7 +39,9 @@ router.post('/googleAuth', async (req, res) => {
 
         res.status(200).json({
             messageState: true,
-            email : user.email,
+            user: {
+                email: user.email
+            },
             token
         });
 
