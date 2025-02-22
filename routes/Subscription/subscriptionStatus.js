@@ -50,11 +50,15 @@ router.post('/subscription-status', authenticateToken, async (req, res) => {
 
         // Aktif abonelik kontrolü
         if (!user.purchaseToken || !user.subscriptionId) {
-            return res.status(400).json({
-                success: false,
+            return res.status(200).json({  
+                success: true,             
                 message: 'Aktif abonelik bulunamadı',
                 data: {
-                    isPremium: false
+                    email: user.email,
+                    isPremium: false,
+                    premiumEnd: null,
+                    autoRenewing: false,
+                    lastVerified: new Date()
                 }
             });
         }
