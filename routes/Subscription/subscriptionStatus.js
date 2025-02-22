@@ -59,8 +59,8 @@ router.post('/subscription-status', authenticateToken, async (req, res) => {
             });
         }
 
-        // Kontrol aralığı (6 saat)
-        const SIX_HOURS = 6 * 60 * 60 * 1000;
+        // Kontrol aralığı (4 saat)
+        const SIX_HOURS = 4 * 60 * 60 * 1000;
         const timeSinceLastCheck = user.lastVerified ? Date.now() - user.lastVerified.getTime() : SIX_HOURS;
 
         // Son kontrolden 6 saat geçmediyse cache'den döndür

@@ -28,7 +28,6 @@ const androidPublisher = google.androidpublisher({
 
 router.post('/subscription-webhook', async (req, res) => {
     try {
-        console.log('Webhook payload:', req.body);
 
         const { 
             notificationType,
@@ -39,7 +38,6 @@ router.post('/subscription-webhook', async (req, res) => {
 
         // Package name kontrolü
         if (packageName !== 'com.storylives.app') {
-            console.error('Invalid package name:', packageName);
             return res.status(400).json({ error: 'Invalid package name' });
         }
 
