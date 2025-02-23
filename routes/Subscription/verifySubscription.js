@@ -48,19 +48,12 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
 
         // Google Play'den abonelik doğrulaması
         try {
-            console.log('Google Play doğrulama başlıyor:', {
-                packageName: 'com.storylives.app',
-                subscriptionId,
-                token: purchaseToken
-            });
 
             const response = await androidPublisher.purchases.subscriptions.get({
                 packageName: 'com.storylives.app',
                 subscriptionId: subscriptionId,
                 token: purchaseToken
             });
-
-            console.log('Google Play yanıtı:', response.data);
 
             // acknowledgementState = 0 ise onayla
             if (response.data.acknowledgementState === 0) {
@@ -72,7 +65,6 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
                         developerPayload: 'custom-string'
                     }
                 });
-                console.log('Abonelik başarıyla onaylandı.');
             }
 
             // Kullanıcıyı bul
@@ -98,7 +90,6 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
             user.lastVerified = new Date();
 
             await user.save();
-            console.log('Kullanıcı güncellendi:', user.email);
 
             res.status(200).json({
                 success: true,
@@ -113,11 +104,6 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
             });
 
         } catch (googleError) {
-            console.error('Google Play doğrulama detaylı hata:', {
-                message: googleError.message,
-                code: googleError.code,
-                details: googleError.response?.data
-            });
             return res.status(400).json({
                 success: false,
                 error: 'Google Play doğrulaması başarısız',
@@ -126,7 +112,6 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
         }
 
     } catch (error) {
-        console.error('Genel hata:', error);
         res.status(500).json({
             success: false,
             error: 'Abonelik doğrulama sırasında bir hata oluştu'
