@@ -83,6 +83,12 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
                         developerPayload: 'custom-string'
                     }
                 });
+                // Onaylama sonrası durumu tekrar kontrol et
+                isSubscriptionActive = (
+                    startTime <= now &&
+                    expiryTime > now &&
+                    true  // Artık onaylandı
+                );
             }
 
             // Kullanıcı bilgilerini güncelle

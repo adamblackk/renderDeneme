@@ -70,11 +70,11 @@ router.post('/subscription-status', authenticateToken, async (req, res) => {
         }
 
         // 4 saatlik kontrol
-        const FOUR_HOURS = 4 * 60 * 60 * 1000;
+        const THREE_MINUTES = 3 * 60 * 1000;
         const timeSinceLastCheck = user.lastVerified ? Date.now() - user.lastVerified.getTime() : FOUR_HOURS;
 
         // Son kontrolden 4 saat geçmediyse cache'den döndür
-        if (timeSinceLastCheck < FOUR_HOURS) {
+        if (timeSinceLastCheck < THREE_MINUTES) {
             return res.status(200).json({
                 success: true,
                 message: 'Cached subscription status',
