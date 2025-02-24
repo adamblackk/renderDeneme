@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-// Kullanıcı Şeması
+// Mevcut yapıyı koruyarak ek alanlar ekleyelim
 const userSchema = new mongoose.Schema({
+  // Mevcut alanlar (değişmeden)
   email: { type: String, required: true, unique: true },
   password: { type: String },
   isActive: { type: Boolean, default: true },
@@ -10,9 +11,27 @@ const userSchema = new mongoose.Schema({
   premiumEnd: { type: Date, default: null },
   purchaseToken: { type: String, default: null },
   subscriptionId: { type: String, default: null },
-  orderId: { type: String, default: null }, // Eklendi
+  orderId: { type: String, default: null },
   autoRenewing: { type: Boolean, default: false },
-  lastVerified: { type: Date, default: null }
+  lastVerified: { type: Date, default: null },
+
+  // Yeni eklenen alanlar
+  subscriptionDetails: {
+    type: {
+      status: String,  // 'ACTIVE', 'GRACE_PERIOD', 'CANCELLED', 'EXPIRED'
+      cancelReason: Number,
+      paymentStatus: String,
+      gracePeriodEnd: Date
+    },
+    default: null
+  },
+  
+  // İsteğe bağlı geçmiş kaydı
+  subscriptionHistory: [{
+    action: String,
+    date: Date,
+    details: mongoose.Schema.Types.Mixed
+  }]
 }, {
   timestamps: true
 });

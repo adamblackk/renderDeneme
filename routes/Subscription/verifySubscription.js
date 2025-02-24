@@ -30,7 +30,6 @@ const androidPublisher = google.androidpublisher({
 });
 
 router.post('/verifySubscription', authenticateToken, async (req, res) => {
-
     try {
         const {
             email,
@@ -46,14 +45,33 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
             });
         }
 
-        // Google Play'den abonelik doğrulaması
-        try {
+        // Kullanıcıyı bul
+        const user = await UserfromModel.User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'Kullanıcı bulunamadı'
+            });
+        }
 
+        try {
+            // Google Play'den abonelik doğrulaması
             const response = await androidPublisher.purchases.subscriptions.get({
                 packageName: 'com.storylives.app',
                 subscriptionId: subscriptionId,
                 token: purchaseToken
             });
+
+            const now = Date.now();
+            const expiryTime = parseInt(response.data.expiryTimeMillis);
+            const startTime = parseInt(response.data.startTimeMillis);
+
+            // Abonelik durumu kontrolleri
+            const isSubscriptionActive = (
+                startTime <= now &&
+                expiryTime > now &&
+                response.data.acknowledgementState === 1
+            );
 
             // acknowledgementState = 0 ise onayla
             if (response.data.acknowledgementState === 0) {
@@ -67,43 +85,42 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
                 });
             }
 
-            // Kullanıcıyı bul
-            const user = await UserfromModel.User.findOne({ email });
-            if (!user) {
-                return res.status(404).json({
-                    success: false,
-                    error: 'Kullanıcı bulunamadı'
-                });
-            }
-
-            // Abonelik süresini belirle
-            const premiumEndDate = new Date(parseInt(response.data.expiryTimeMillis));
-
             // Kullanıcı bilgilerini güncelle
-            user.isPremium = true;
-            user.premiumStart = new Date();
-            user.premiumEnd = premiumEndDate;
+            user.isPremium = isSubscriptionActive;
+            user.premiumStart = new Date(startTime);
+            user.premiumEnd = new Date(expiryTime);
             user.purchaseToken = purchaseToken;
             user.subscriptionId = subscriptionId;
             user.orderId = orderId;
             user.autoRenewing = response.data.autoRenewing;
             user.lastVerified = new Date();
 
+            // Abonelik detaylarını güncelle
+            user.subscriptionDetails = {
+                status: isSubscriptionActive ? 'ACTIVE' : 'PENDING',
+                paymentStatus: response.data.acknowledgementState === 1 ? 'CONFIRMED' : 'PENDING',
+                priceAmount: response.data.priceAmountMicros / 1000000,
+                currency: response.data.priceCurrencyCode
+            };
+
             await user.save();
 
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message: 'Abonelik başarıyla doğrulandı',
                 data: {
                     email: user.email,
                     isPremium: user.isPremium,
+                    premiumStart: user.premiumStart,
                     premiumEnd: user.premiumEnd,
                     subscriptionId: user.subscriptionId,
-                    autoRenewing: user.autoRenewing
+                    autoRenewing: user.autoRenewing,
+                    subscriptionDetails: user.subscriptionDetails
                 }
             });
 
         } catch (googleError) {
+            console.error('Google Play API Error:', googleError);
             return res.status(400).json({
                 success: false,
                 error: 'Google Play doğrulaması başarısız',
@@ -112,12 +129,11 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).json({
+        console.error('Abonelik doğrulama hatası:', error);
+        return res.status(500).json({
             success: false,
             error: 'Abonelik doğrulama sırasında bir hata oluştu'
         });
     }
 });
-
-
 module.exports = router; 
