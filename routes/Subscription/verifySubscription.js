@@ -67,7 +67,7 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
             const startTime = parseInt(response.data.startTimeMillis);
 
             // Abonelik durumu kontrolleri
-            const isSubscriptionActive = (
+            let isSubscriptionActive = (
                 startTime <= now &&
                 expiryTime > now &&
                 response.data.acknowledgementState === 1
@@ -83,12 +83,7 @@ router.post('/verifySubscription', authenticateToken, async (req, res) => {
                         developerPayload: 'custom-string'
                     }
                 });
-                // Onaylama sonrası durumu tekrar kontrol et
-                isSubscriptionActive = (
-                    startTime <= now &&
-                    expiryTime > now &&
-                    true  // Artık onaylandı
-                );
+                isSubscriptionActive = true;
             }
 
             // Kullanıcı bilgilerini güncelle
