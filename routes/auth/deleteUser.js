@@ -9,7 +9,7 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-router.delete('/deleteUser',authenticateToken, async (req, res) => {
+router.post('/deleteUser',authenticateToken, async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -28,11 +28,16 @@ router.delete('/deleteUser',authenticateToken, async (req, res) => {
 
     // Kullanıcı bulunamadıysa
     if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+      return res.status(404).json({
+        removedState:false,
+         message: 'Kullanıcı bulunamadı.' });
     }
 
     // Başarılı yanıt
-    res.status(200).json({ message: 'Kullanıcı başarıyla silindi.' });
+    res.status(200).json({
+       removedState:true,
+       message: 'Kullanıcı başarıyla silindi.'
+      });
   } catch (error) {
     console.error('Hata:', error.message);
 
