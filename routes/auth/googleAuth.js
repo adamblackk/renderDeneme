@@ -34,7 +34,7 @@ router.post('/googleAuth', async (req, res) => {
         const token = jwt.sign(
             { id: user._id, email: user.email },
             'your-secret-key',
-            { expiresIn: '30d' }
+            { expiresIn: '90d' }
         );
 
         res.status(200).json({

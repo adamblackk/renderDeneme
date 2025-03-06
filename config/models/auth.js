@@ -31,7 +31,19 @@ const userSchema = new mongoose.Schema({
     action: String,
     date: Date,
     details: mongoose.Schema.Types.Mixed
-  }]
+  }],
+  // FCM Token alanı
+  fcmToken: { type: String, default: null },
+  language: {
+    type: String,
+    enum: ['tr', 'en', 'es'], // sadece desteklenen diller
+    default: 'en', // varsayılan İngilizce
+    required: true
+},
+timezone: { 
+  type: String, 
+  default: 'America/New_York' 
+}
 }, {
   timestamps: true
 });

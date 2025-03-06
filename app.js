@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var connectDB = require('./config/utils/mongoDB')
+const firebaseAdmin = require('./config/utils/firebase')
+const SchedulerService = require('./config/utils/schedulerService');
 
 //auth
 var sendPasswordResetCode = require('./routes/auth/sendPasswordResetCode')
@@ -19,6 +21,7 @@ var logout  = require ('./routes/auth/logout')
 var verifyPasswordResetCode = require('./routes/auth/verifyPasswordResetCode')
 var refreshPassword = require('./routes/auth/refreshPasssword')
 var googleAuth = require('./routes/auth/googleAuth')
+var refreshToken = require('./routes/auth/refreshToken')
 
 // Stories
 var getAllStory = require('./routes/Story/getAllStory')
@@ -34,7 +37,8 @@ var verifySubscription = require('./routes/Subscription/verifySubscription')
 var subscriptionStatus = require('./routes/Subscription/subscriptionStatus')
 var subscriptionWebhook = require('./routes/Subscription/subscriptionWebhook')
 
-
+//FCMFirebase
+var updatedFcmToken = require('./routes/FCMFirebase/updateFcmToken')
 
 //new 
 var newRouter = require('./routes/new');
@@ -56,7 +60,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// Scheduler'ı başlat
+try {
+  new SchedulerService();
+  console.log('🚀 Notification scheduler started successfully');
+} catch (error) {
+  console.error('🚨 Failed to start notification scheduler:', error);
+}
 
 
 //Auth
@@ -76,6 +86,7 @@ app.use('/',refreshPassword)
 app.use('/',googleAuth)
 app.use('/',getUpdatedStories)
 app.use('/',addCategory)
+app.use('/',refreshToken)
 
 //Stories
 app.use('/',getAllStory);
@@ -89,7 +100,8 @@ app.use('/',verifySubscription)
 app.use('/',subscriptionStatus)
 app.use('/',subscriptionWebhook)
 
-
+//FCMFirebase
+app.use('/',updatedFcmToken)
 
 
 // catch 404 and forward to error handler

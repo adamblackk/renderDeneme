@@ -70,13 +70,11 @@ storySchema.index({ isPremium: 1 });
 
 
 // Hikaye Modeli
-const Story = mongoose.model('Story', storySchema);
 const Story_tr = mongoose.model("stories_tr",storySchema)
 const Story_en = mongoose.model("stories_en",storySchema)
 const Story_es = mongoose.model("stories_es",storySchema)
 
 module.exports = { 
-  Story,
   Story_tr,
   Story_en,
   Story_es
