@@ -14,7 +14,7 @@ function validateEmail(email) {
 router.post('/addUser', async (req, res) => {
   try {
     // Body'den gelen kullanıcı verilerini al
-    const { email, password, isActive } = req.body;
+    const { email, password, isActive,fcmToken  } = req.body;
 
     // Zorunlu alanlar kontrolü
     if (!email || !password) {
@@ -42,7 +42,7 @@ router.post('/addUser', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Yeni kullanıcı oluştur ve kaydet
-    const newUser = new UserfromModel.User({ email, password: hashedPassword, isActive });
+    const newUser = new UserfromModel.User({ email, password: hashedPassword, isActive,fcmToken });
     const savedUser = await newUser.save();
 
     // JWT oluştur

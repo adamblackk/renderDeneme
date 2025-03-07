@@ -8,7 +8,7 @@ const UserfromModel = require('../../config/models/auth');
 
 router.post('/googleAuth', async (req, res) => {
     try {
-        const { idToken } = req.body;
+        const { idToken ,fcmToken } = req.body;
         
         // Basic token kontrolü
         const decodedToken = jwt.decode(idToken);
@@ -26,6 +26,7 @@ router.post('/googleAuth', async (req, res) => {
                 email,
                 password: "",
                 isActive: true,
+                fcmToken 
             });
             await user.save();
         }

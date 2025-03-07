@@ -10,6 +10,7 @@ router.post('/updateFcmToken', authenticateToken, async (req, res) => {
     const userEmail = req.user.email; // Token'dan gelen email
 
     console.log(timezone)
+    console.log(userEmail)
 
     const user = await User.findOne({ email: userEmail });
     if (!user) {

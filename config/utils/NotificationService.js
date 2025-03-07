@@ -54,10 +54,17 @@ class NotificationService {
           storyId: story._id.toString(),
           type: "daily_story",
           language: user.language
-        }
+        },
+        android: {
+          priority: "high"
+      }
       };
 
+      console.log('Sending notification message:', JSON.stringify(message, null, 2));
       const response = await admin.messaging().send(message);
+      console.log('Notification sent, response:', response);
+
+
       return response;
     } catch (error) {
       console.error('Error sending notification:', error);
