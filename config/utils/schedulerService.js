@@ -10,7 +10,7 @@ class SchedulerService {
     this.timeSlots = {
       tr: {
         timezone: 'Europe/Istanbul',
-        time: '20:00'
+        time: '03:41'
       },
       en: {
         timezone: 'America/New_York',
