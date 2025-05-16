@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const specialDaySchema = new mongoose.Schema({
@@ -32,12 +31,20 @@ const specialDaySchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  isClickable: {           // Yeni eklenen
+    type: Boolean,
+    default: false
+  },
+  redirectUrl: {           // Yeni eklenen
+    type: String,
+    default: null
   }
 }, {
   timestamps: true
 });
 
-// Tarih kontrolü için middleware
+// Diğer kısımlar aynı kalacak
 specialDaySchema.pre('save', function(next) {
   if (this.startDate >= this.endDate) {
     next(new Error('End date must be after start date'));
@@ -45,11 +52,9 @@ specialDaySchema.pre('save', function(next) {
   next();
 });
 
-// İndexler
 specialDaySchema.index({ startDate: 1, endDate: 1 });
 specialDaySchema.index({ isActive: 1 });
 
-// Dil bazlı modeller
 const SpecialDay_tr = mongoose.model('special_days_tr', specialDaySchema);
 const SpecialDay_en = mongoose.model('special_days_en', specialDaySchema);
 const SpecialDay_es = mongoose.model('special_days_es', specialDaySchema);

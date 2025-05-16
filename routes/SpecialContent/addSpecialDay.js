@@ -1,9 +1,7 @@
-
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../../config/utils/authenticateToken');
 const SpecialDayModel = require('../../config/models/specialDayModel');
-
 
 router.post('/addSpecialDay', authenticateToken, async (req, res) => {
     try {
@@ -26,7 +24,7 @@ router.post('/addSpecialDay', authenticateToken, async (req, res) => {
             });
         }
 
-        // Zorunlu alanların kontrolü
+        // Zorunlu alanların kontrolü - yeni alanları opsiyonel bırakıyoruz
         const requiredFields = ['title', 'message', 'imageUrl', 'type', 'startDate', 'endDate'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
         
@@ -42,7 +40,7 @@ router.post('/addSpecialDay', authenticateToken, async (req, res) => {
         const collectionName = `SpecialDay_${lang}`;
         const SpecialDayCollection = SpecialDayModel[collectionName];
 
-        // Yeni özel gün oluştur
+        // Yeni özel gün oluştur - yeni alanları da ekledik
         const newSpecialDay = new SpecialDayCollection({
             title: req.body.title,
             message: req.body.message,
@@ -50,7 +48,9 @@ router.post('/addSpecialDay', authenticateToken, async (req, res) => {
             type: req.body.type,
             startDate: new Date(req.body.startDate),
             endDate: new Date(req.body.endDate),
-            isActive: req.body.isActive ?? true
+            isActive: req.body.isActive ?? true,
+            isClickable: req.body.isClickable ?? false, // Yeni alan, varsayılan false
+            redirectUrl: req.body.redirectUrl || null    // Yeni alan, varsayılan null
         });
 
         // Kaydet
@@ -71,6 +71,5 @@ router.post('/addSpecialDay', authenticateToken, async (req, res) => {
         });
     }
 });
-
 
 module.exports = router;
