@@ -40,6 +40,18 @@ var subscriptionWebhook = require('./routes/Subscription/subscriptionWebhook')
 //FCMFirebase
 var updatedFcmToken = require('./routes/FCMFirebase/updateFcmToken')
 
+//Voice
+var generate = require('./routes/GenerateVoice/generate')
+var workPlace = require('./routes/GenerateVoice/voices/workPlace')
+var generateBatchAudio = require('./routes/GenerateVoice/generateBatchAudio')
+
+var poly = require('./routes/GenerateVoice/poly')
+
+//SpecialContent
+var getSpecialDay = require('./routes/SpecialContent/getSpecialContent')
+var addSpecialDay = require('./routes/SpecialContent/addSpecialDay')
+
+
 //new 
 var newRouter = require('./routes/new');
 const { insertMany } = require('./config/models/blackListedTokenModel');
@@ -105,6 +117,23 @@ app.use('/',subscriptionWebhook)
 
 //FCMFirebase
 app.use('/',updatedFcmToken)
+
+//Voice
+app.use('/',generate)
+app.use('/',workPlace)
+app.use('/',generateBatchAudio)
+
+app.use('/',poly)
+
+//SpecialDay
+app.use('/',getSpecialDay)
+app.use('/',addSpecialDay)
+
+
+
+
+// Statik klasör (tarayıcıdan .mp3 erişimi için)
+app.use('/voices', express.static(path.join(__dirname, 'voiceRouterFolderName', 'voices')));
 
 
 // catch 404 and forward to error handler

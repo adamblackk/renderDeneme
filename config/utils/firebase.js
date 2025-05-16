@@ -17,7 +17,8 @@ try {
 
     // Firebase admin initialize
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET  //bunu ekledim yeni
     });
 
     console.log('Firebase Admin SDK initialized successfully');

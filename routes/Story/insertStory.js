@@ -53,11 +53,12 @@ router.post('/insertStories', authenticateToken, async (req, res) => {
         const storiesToInsert = stories.map(story => ({
             title: story.title,
             content: story.content,
+            description:story.description,
             imageUrl: story.imageUrl,
             category: story.category,
             discipline: story.discipline,
             mainCharacter: story.mainCharacter,
-            readingTime: Math.ceil(story.content.split(/\s+/).length / 200).toString(),
+            readingTime: story.readingTime,
             tags: story.tags || [],
             stats: {
                 views: 0,

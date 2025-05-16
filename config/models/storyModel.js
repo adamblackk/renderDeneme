@@ -11,6 +11,10 @@ const storySchema = new mongoose.Schema({
     type: String, 
     required: true 
   },
+  description: { 
+    type: String, 
+    required: true 
+  },
   imageUrl: { 
     type: String, 
     required: true 
@@ -56,7 +60,13 @@ const storySchema = new mongoose.Schema({
   isPremium: { 
     type: Boolean, 
     default: false 
-  }
+  },
+  audioVariants: [
+    {
+      speaker: { type: String, required: true },
+      url: { type: String, required: true }
+    }
+  ]
 }, {
   timestamps: true // createdAt ve updatedAt otomatik oluşturulur
 });
