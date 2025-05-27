@@ -32,11 +32,11 @@ const androidPublisher = google.androidpublisher({
 router.post('/verifySubscription', authenticateToken, async (req, res) => {
     try {
         const {
-            email,
             purchaseToken,
             subscriptionId,
             orderId
         } = req.body;
+        const email = req.user.email
 
         if (!email || !purchaseToken || !subscriptionId || !orderId) {
             return res.status(400).json({

@@ -32,13 +32,22 @@ const androidPublisher = google.androidpublisher({
 
 router.post('/subscription-status', authenticateToken, async (req, res) => {
     try {
-        const { email } = req.body;
+        const email = req.user.email;
 
         if (!email) {
             return res.status(400).json({
                 success: false,
                 error: 'Email bilgisi gerekli'
             });
+        }
+        //Google test edebilsin diye eklendi
+        if (email === 'googletest@example.com') {
+    return res.status(200).json({
+        success: true,
+        data: {
+            isPremium: true
+        }
+         });
         }
 
         const user = await UserfromModel.User.findOne({ email });
