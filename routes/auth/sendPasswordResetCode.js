@@ -40,14 +40,40 @@ router.post('/sendResetCode', async (req, res) => {
         { upsert: true } // Kayıt yoksa oluştur
     );
 
-    // E-posta ile doğrulama kodunu gönder
-    const mailOptions = {
-        from: 'admblck50@gmail.com',
-        to: email,
-        subject: 'Password Reset Code',
-        text: `Your password reset code is: ${resetCode}`,
-        html: `<p>Your password reset code is: <b>${resetCode}</b></p>`
-    };
+   const mailOptions = {
+  from: '"StoryLives Support" <storylivesapp@gmail.com>',
+  to: email,
+  subject: 'Your Password Reset Code for StoryLives',
+  text: `
+Hi,
+
+We received a request to reset your password for your StoryLives account.
+Your reset code is: ${resetCode}
+
+If you did not request this, please disregard this email.
+
+Thank you,
+The StoryLives Team
+`,
+  html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+        <h2 style="color:#2c3e50;">StoryLives Password Reset</h2>
+        <p>Hello,</p>
+        <p>We received a request to reset the password associated with this email address.</p>
+        <p>Your reset code is:</p>
+        <p style="font-size: 24px; font-weight: bold; color: #007bff; background: #e6f0ff; padding: 10px 15px; border-radius: 6px; display: inline-block;">
+          ${resetCode}
+        </p>
+        <p style="margin-top:20px;">If you didn’t request a password reset, you can safely ignore this email — no changes have been made to your account.</p>
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ccc;">
+        <p style="font-size: 13px; color: #999;">
+          This email was sent by StoryLives because a password reset request was made. Do not reply to this message.
+        </p>
+    </div>
+  `
+};
+
+
 
     try {
         await sendMail.mailTransporter.sendMail(mailOptions);

@@ -51,6 +51,13 @@ var poly = require('./routes/GenerateVoice/poly')
 var getSpecialDay = require('./routes/SpecialContent/getSpecialContent')
 var addSpecialDay = require('./routes/SpecialContent/addSpecialDay')
 
+//compressAudio
+var compressAudio = require('./routes/GenerateVoice/compressAudio')
+
+//attribution
+var attribution = require('./routes/attribution/attribution')
+var getAttributions = require('./routes/attribution/getAttribution')
+
 
 //new 
 var newRouter = require('./routes/new');
@@ -128,6 +135,13 @@ app.use('/',poly)
 //SpecialDay
 app.use('/',getSpecialDay)
 app.use('/',addSpecialDay)
+
+//compressAudio
+app.use('/',compressAudio)
+
+//attribution
+app.use('/',attribution)
+app.use('/',getAttributions)
 
 
 

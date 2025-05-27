@@ -19,6 +19,14 @@
       border-bottom: 2px solid #eee;
       padding-bottom: 10px;
     }
+    .search-box {
+      margin: 20px 0;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
     .item {
       margin-bottom: 25px;
     }
@@ -47,27 +55,69 @@
 
   <p>This page lists all third-party images, icons, and resources used within the StoryLives mobile application. Each asset is credited to its original creator according to license requirements.</p>
 
-  <!-- SAMPLE ENTRY 1 -->
-  <div class="item">
-    <div class="item-title">Welcome Illustration</div>
-    <div>Author: Freepik</div>
-    <div>Source: <a href="https://www.freepik.com/free-vector/welcome-concept_13784562.htm" target="_blank">Freepik - Welcome Concept</a></div>
-    <div>License: Free for personal and commercial use with attribution</div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by title, author, or source..." />
   </div>
 
-  <!-- SAMPLE ENTRY 2 -->
-  <div class="item">
-    <div class="item-title">Icons</div>
-    <div>Author: FontAwesome</div>
-    <div>Source: <a href="https://fontawesome.com/" target="_blank">https://fontawesome.com/</a></div>
-    <div>License: MIT License</div>
-  </div>
-
-  <!-- You can add more entries like above -->
+  <div id="attribution-list"></div>
 
   <p class="footer">
     If you are a content owner and believe your rights have been violated, please contact us at <a href="mailto:contact@storylives.app">contact@storylives.app</a>
   </p>
+
+  <script>
+    let allData = [];
+
+    function renderItems(filteredData) {
+      const container = document.getElementById('attribution-list');
+      container.innerHTML = '';
+
+      filteredData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+
+        const sourceLine = item.sourceUrl
+          ? `<a href="${item.sourceUrl}" target="_blank">${item.sourcePlatform} – ${item.sourceTitle}</a>`
+          : `${item.sourcePlatform} – ${item.sourceTitle}`;
+
+        const licenseLine = item.licenseUrl
+          ? `<a href="${item.licenseUrl}" target="_blank">${item.licenseShort || item.licenseName}</a>`
+          : item.licenseShort || item.licenseName;
+
+        div.innerHTML = `
+          <div class="item-title">${item.title}</div>
+          <div>Original by: ${item.originalAuthor}</div>
+          <div>Source: ${sourceLine}</div>
+          <div>License: ${licenseLine}</div>
+          ${item.description ? `<div>${item.description}</div>` : ''}
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    fetch('http://localhost:4000/getAttributions')
+      .then(res => res.json())
+      .then(data => {
+        allData = data;
+        renderItems(allData);
+      })
+      .catch(err => {
+        document.getElementById('attribution-list').innerHTML = '<p style="color:red;">Failed to load attributions.</p>';
+        console.error(err);
+      });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filtered = allData.filter(item =>
+        item.title.toLowerCase().includes(searchTerm) ||
+        item.originalAuthor.toLowerCase().includes(searchTerm) ||
+        item.sourcePlatform.toLowerCase().includes(searchTerm) ||
+        item.sourceTitle.toLowerCase().includes(searchTerm)
+      );
+      renderItems(filtered);
+    });
+  </script>
 
 </body>
 </html>
